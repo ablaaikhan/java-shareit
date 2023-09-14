@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class ItemRepositoryImpl implements ItemRepository {
@@ -39,5 +40,23 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     public List<Item> getAll() {
         return new ArrayList<>(items.values());
+    }
+
+    @Override
+    public List<Item> getAllByOwnerId(long id) {
+        List<Item> userItems = new ArrayList<>();
+        for (Item item : items.values()) {
+            if (item.getOwner().getId().equals(id)) {
+                userItems.add(item);
+            }
+        }
+        return userItems;
+    }
+
+    @Override
+    public List<Item> findByText(long userId, String str) {
+        return items.values().stream()
+                .filter(item -> item.toString().toLowerCase().contains(str.toLowerCase()) && item.isAvailable())
+                .collect(Collectors.toList());
     }
 }

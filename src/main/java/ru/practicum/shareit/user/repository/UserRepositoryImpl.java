@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.repository;
 
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
@@ -39,5 +40,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         return new ArrayList<>(users.values());
+    }
+
+    @Override
+    public boolean checkEmail(UserDto userDto) {
+        return users.values().stream()
+                .anyMatch(user -> user.getEmail().equals(userDto.getEmail()));
     }
 }
